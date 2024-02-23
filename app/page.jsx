@@ -1,30 +1,52 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { fetchMarkdowns } from '@/components/ParseRepo';
+
 const Home = () => {
   const [submitting, setSubmitting] = useState(false);
-  const [inputText, setInputText] = useState('');
+  const [inputText, setInputText] = useState({owner: '', repo: ''});
+  const [markdowns, setMarkdowns] = useState([]);
 
   const handleInputChange = (e) => {
-    setInputText(e.target.value);
+    const { name, value } = e.target;
+    setInputText((prevState) => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-
+    const res = await fetchMarkdowns(inputText.owner, inputText.repo);
+    setMarkdowns(res);
+    setSubmitting(false);
   };
-
   return (
     <div>
       <form onSubmit={handleSubmit}>
         <label>
-          <span>Write here: </span>
-          <textarea
+          <span>Owner: </span>
+          <input
             type="text"
-            value={inputText}
+            name="owner"
+            value={inputText.owner}
             onChange={handleInputChange}
-            placeholder='Put the link here'
+            placeholder='Owner name'
+            required
+          />
+        </label>
+      </form>
+      <form onSubmit={handleSubmit}>
+        <label>
+          <span>Repo name: </span>
+          <input
+            type="text"
+            name="repo"
+            value={inputText.repo}
+            onChange={handleInputChange}
+            placeholder='Repo name'
             required
           />
         </label>
@@ -36,12 +58,19 @@ const Home = () => {
         </button>
         <div>
           {submitting && (
-            <div>You submitted: {inputText}</div>
+            <div>You submitted: {inputText.owner} / {inputText.repo}</div>
           )}
-        </div> 
+        </div>
       </form>
+      <div>
+        <ul>
+          {markdowns.map((file, index) => (
+            <li key={index}>{file.name}</li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
 
-export default Home
+export default Home;
