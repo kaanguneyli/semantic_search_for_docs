@@ -6,7 +6,7 @@ import { fetchMarkdowns } from '@/components/ParseRepo';
 const Home = () => {
   const [submitting, setSubmitting] = useState(false);
   const [inputText, setInputText] = useState({owner: '', repo: ''});
-  const [markdowns, setMarkdowns] = useState([]);
+  const [contents, setContents] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -20,9 +20,10 @@ const Home = () => {
     e.preventDefault();
     setSubmitting(true);
     const res = await fetchMarkdowns(inputText.owner, inputText.repo);
-    setMarkdowns(res);
+    setContents(res);
     setSubmitting(false);
   };
+
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -40,7 +41,7 @@ const Home = () => {
       </form>
       <form onSubmit={handleSubmit}>
         <label>
-          <span>Repo name: </span>
+          <span>Repo: </span>
           <input
             type="text"
             name="repo"
@@ -64,9 +65,11 @@ const Home = () => {
       </form>
       <div>
         <ul>
-          {markdowns.map((file, index) => (
-            <li key={index}>{file.name}</li>
-          ))}
+          {contents.map((content, index) => (
+            <li key={index}>
+              <pre>{content}</pre>
+            </li>
+          ))} 
         </ul>
       </div>
     </div>
