@@ -1,8 +1,16 @@
 import { Octokit } from "@octokit/core";
+import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // npm install -S langchain
 
 const octokit = new Octokit();
 
-const fetchMarkdowns = async (owner, repo) => {
+const parseMarkdowns = async (owner, repo) => {
+  
+  const splitter = new RecursiveCharacterTextSplitter({
+    chunkSize: 500,
+    chunkOverlap: 0,
+  });
+  
+
   try {
     const response = await octokit.request('GET /repos/{owner}/{repo}/contents', {
       owner,
@@ -18,11 +26,14 @@ const fetchMarkdowns = async (owner, repo) => {
         repo,
         path: file.path,
       });
-      // Decode the content from base64 and return it
+      // Decode the content from base64
       return Buffer.from(fileResponse.data.content, 'base64').toString('utf-8');
     }));
 
-    return contents;
+    //return contents;
+    const output = await splitter.createDocuments(contents);
+
+    return output;
     
   } catch (error) {
     console.error("Error fetching files:", error);
@@ -30,4 +41,4 @@ const fetchMarkdowns = async (owner, repo) => {
   }
 };
   
-export { fetchMarkdowns };
+export { parseMarkdowns };

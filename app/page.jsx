@@ -1,9 +1,10 @@
 'use client';
 
 import { useState } from 'react';
-import { fetchMarkdowns } from '@/components/ParseRepo';
+import { parseMarkdowns } from '@/components/ParseRepo';
 
 const Home = () => {
+
   const [submitting, setSubmitting] = useState(false);
   const [inputText, setInputText] = useState({owner: '', repo: ''});
   const [contents, setContents] = useState([]);
@@ -19,7 +20,7 @@ const Home = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
-    const res = await fetchMarkdowns(inputText.owner, inputText.repo);
+    const res = await parseMarkdowns(inputText.owner, inputText.repo);
     setContents(res);
     setSubmitting(false);
   };
@@ -67,7 +68,7 @@ const Home = () => {
         <ul>
           {contents.map((content, index) => (
             <li key={index}>
-              <pre>{content}</pre>
+              <pre>{content.pageContent}</pre>
             </li>
           ))} 
         </ul>
