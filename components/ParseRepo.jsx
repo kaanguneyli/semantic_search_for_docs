@@ -17,7 +17,7 @@ const parseMarkdowns = async (owner, repo) => {
       repo,
     });
     const markdowns = response.data.filter(file => {
-      return file.name.endsWith('.md') || file.name.endsWith('.mdx');
+      return file.type === 'file' && (file.name.endsWith('.md') || file.name.endsWith('.mdx'));
     });
 
     const contents = await Promise.all(markdowns.map(async (file) => {

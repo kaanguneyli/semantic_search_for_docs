@@ -10,7 +10,6 @@ const RootLayout = ( {children} ) => {
     <html lang='en'>
       <body>
         <div className='main'></div>
-
         <main className='app'>
           {children}
         </main>
