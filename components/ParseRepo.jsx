@@ -4,6 +4,9 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // np
 const octokit = new Octokit();
 
 const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
+
+  const test = ['This is a test document.', 'Yes, indeed.', 'Weird stuff.'];
+  return test;
   
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 500,
