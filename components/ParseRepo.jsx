@@ -3,24 +3,32 @@ import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // np
 
 const octokit = new Octokit();
 
-const parseMarkdowns = async (owner, repo) => {
+const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
   
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 500,
     chunkOverlap: 0,
   });
-  
 
   try {
-    const response = await octokit.request('GET /repos/{owner}/{repo}/contents', {
+    const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
       owner,
       repo,
+      path,
     });
-    const markdowns = response.data.filter(file => {
+
+    const files = response.data;
+
+    const markdowns = files.filter(file => {
       return file.type === 'file' && (file.name.endsWith('.md') || file.name.endsWith('.mdx'));
     });
 
-    const contents = await Promise.all(markdowns.map(async (file) => {
+    const directories = files.filter(file => file.type === 'dir');
+
+    let contents = [];
+    
+    // Fetch contents of Markdown files in the current directory
+    contents = await Promise.all(markdowns.map(async (file) => {
       const fileResponse = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
         owner,
         repo,
@@ -30,10 +38,19 @@ const parseMarkdowns = async (owner, repo) => {
       return Buffer.from(fileResponse.data.content, 'base64').toString('utf-8');
     }));
 
-    //return contents;
-    const output = await splitter.createDocuments(contents);
+    // Concatenate contents to accumulatedContents
+    accumulatedContents.push(...contents);
 
-    return output;
+    // Recursively search subdirectories for Markdown files
+    for (const directory of directories) {
+      await parseMarkdowns(owner, repo, directory.path, accumulatedContents);
+    }
+
+    // If this is the initial call, process accumulated contents
+    if (path === '') {
+      const output = await splitter.createDocuments(accumulatedContents);
+      return output;
+    }
     
   } catch (error) {
     console.error("Error fetching files:", error);
