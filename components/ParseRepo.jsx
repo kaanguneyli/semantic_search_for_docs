@@ -5,8 +5,8 @@ const octokit = new Octokit();
 
 const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
 
-  const test = ['This is a test document.', 'Yes, indeed.', 'Weird stuff.'];
-  return test;
+  //const test = ['This is a test document.', 'Yes, indeed.', 'Weird stuff.'];
+  //return test;
   
   const splitter = new RecursiveCharacterTextSplitter({
     chunkSize: 500,
@@ -50,10 +50,10 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
     }
 
     // If this is the initial call, process accumulated contents
-    if (path === '') {
+    //if (path === '') {
       const output = await splitter.createDocuments(accumulatedContents);
       return output;
-    }
+    //}
     
   } catch (error) {
     console.error("Error fetching files:", error);
