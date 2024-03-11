@@ -25,6 +25,7 @@ const Home = () => {
     setSubmitting(false);
   };
 
+  // TODO line 71: <pre>{content.pageContent}</pre>
   return (
     <div>
       <form onSubmit={handleSubmit}>
@@ -68,7 +69,7 @@ const Home = () => {
         <ul>
           {contents.map((content, index) => (
             <li key={index}>
-              <pre>{content.pageContent}</pre>
+              <pre>{content}</pre>
             </li>
           ))} 
         </ul>
