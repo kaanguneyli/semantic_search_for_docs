@@ -1,5 +1,6 @@
 import { Octokit } from "@octokit/core";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // npm install -S langchain
+import { promises as fs } from 'fs';
 
 const octokit = new Octokit();
 
@@ -11,7 +12,6 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
       method: 'POST',
       body: JSON.stringify({ test }),
     });
-    console.log(response);
     return test;
   } catch (error) { 
     console.error("Error fetching files:", error);
@@ -62,12 +62,19 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
 //    // If this is the initial call, process accumulated contents
 //    //if (path === '') {
 //    const output = await splitter.createDocuments(accumulatedContents);
+//    const output_json = JSON.stringify({ output });
+//    console.log('output_json:', output_json);
+//    fs.writeFile('myFile.json', jsonString, (err) => {
+//    if (err) {
+//      console.error('Error writing file:', err);
+//      return;
+//    }
+//    console.log('File has been written successfully');
 //    try {
 //      const response = await fetch('/api/addDocument', {
 //        method: 'POST',
-//        body: JSON.stringify({ output }),
+//        body: output_json,
 //      });
-//      console.log(response);
 //      return output;
 //    } catch (error) { 
 //      console.error("Error fetching files:", error);
