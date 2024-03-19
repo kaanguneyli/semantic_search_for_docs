@@ -11,7 +11,7 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
       method: 'POST',
       body: JSON.stringify({ test }),
     });
-    //console.log(response);
+    console.log(response);
     return test;
   } catch (error) { 
     console.error("Error fetching files:", error);
@@ -62,7 +62,17 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
 //    // If this is the initial call, process accumulated contents
 //    //if (path === '') {
 //    const output = await splitter.createDocuments(accumulatedContents);
-//    return output;
+//    try {
+//      const response = await fetch('/api/addDocument', {
+//        method: 'POST',
+//        body: JSON.stringify({ output }),
+//      });
+//      console.log(response);
+//      return output;
+//    } catch (error) { 
+//      console.error("Error fetching files:", error);
+//      return output;
+//    }
 //    //}
 //    
 //  } catch (error) {
