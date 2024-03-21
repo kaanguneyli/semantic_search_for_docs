@@ -8,7 +8,7 @@ import { Document } from "langchain/document";
 export async function POST (req) {
   const { test } = await req.json();
   try {
-    // console.log('zıbab ıvvj:', test.pageContent);   // bu olmuyor ama verinin geldiğini zaten az çok biliyoruz.
+    console.log('zıbab ıvvj:', JSON.stringify( {test}));
     return new Response(JSON.stringify( {test} ), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
