@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { parseMarkdowns } from '@/components/ParseRepo';
+import { Document } from "langchain/document";
 
 const Home = () => {
 
@@ -69,7 +70,7 @@ const Home = () => {
         <ul>
           {contents.map((content, index) => (
             <li key={index}>
-              <pre>{content}</pre>
+              <pre>{content.pageContent}</pre>
             </li>
           ))} 
         </ul>

@@ -1,12 +1,34 @@
 import { Octokit } from "@octokit/core";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // npm install -S langchain
-import { promises as fs } from 'fs';
+//import { promises as fs } from 'fs';
+import { Document } from "langchain/document";
 
 const octokit = new Octokit();
 
+const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
+  chunkSize: 500,
+  chunkOverlap: 0,
+});
+
 const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
 
-  const test = ['This is a test document.', 'Yes, indeed.', 'Weird stuff.'];
+//const test = ["This is a test document.", "Yes, indeed.", "Weird stuff."];
+
+  const test = [
+    new Document({
+      metadata: {name: 'id'},
+      pageContent: "This is a test document.",
+    }),
+    new Document({
+      metadata: {name: 'id'},
+      pageContent: "Yes, indeed.",
+    }),
+    new Document({
+      metadata: {name: "id"},
+      pageContent: "Weird stuff.",
+    }),
+  ];
+  
   try {
     const response = await fetch('/api/addDocument', {
       method: 'POST',
@@ -15,32 +37,21 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
     return test;
   } catch (error) { 
     console.error("Error fetching files:", error);
-    return [];
+    return test;
   }
-  
-//  const splitter = new RecursiveCharacterTextSplitter({
-//    chunkSize: 500,
-//    chunkOverlap: 0,
-//  });
-//
+
 //  try {
 //    const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
 //      owner,
 //      repo,
 //      path,
 //    });
-//
 //    const files = response.data;
-//
 //    const markdowns = files.filter(file => {
 //      return file.type === 'file' && (file.name.endsWith('.md') || file.name.endsWith('.mdx'));
 //    });
-//
 //    const directories = files.filter(file => file.type === 'dir');
-//
 //    let contents = [];
-//    
-//    // Fetch contents of Markdown files in the current directory
 //    contents = await Promise.all(markdowns.map(async (file) => {
 //      const fileResponse = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
 //        owner,
@@ -60,16 +71,9 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
 //    }
 //
 //    // If this is the initial call, process accumulated contents
-//    //if (path === '') {
 //    const output = await splitter.createDocuments(accumulatedContents);
 //    const output_json = JSON.stringify({ output });
 //    console.log('output_json:', output_json);
-//    fs.writeFile('myFile.json', jsonString, (err) => {
-//    if (err) {
-//      console.error('Error writing file:', err);
-//      return;
-//    }
-//    console.log('File has been written successfully');
 //    try {
 //      const response = await fetch('/api/addDocument', {
 //        method: 'POST',
@@ -80,7 +84,6 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
 //      console.error("Error fetching files:", error);
 //      return output;
 //    }
-//    //}
 //    
 //  } catch (error) {
 //    console.error("Error fetching files:", error);
