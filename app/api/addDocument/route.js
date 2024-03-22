@@ -6,10 +6,10 @@ import { Document } from "langchain/document";
 
 
 export async function POST (req) {
-  const { test } = await req.json();
+  const array = await req.json();
   try {
-    console.log('zıbab ıvvj:', JSON.stringify( {test}));
-    return new Response(JSON.stringify( {test} ), {
+    console.log('zıbab ıvvj:', JSON.stringify( {array} ));
+    return new Response(JSON.stringify( {array} ), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
@@ -30,7 +30,7 @@ export async function POST (req) {
 //
 //const embeddings = new OpenAIEmbeddings({
 //  openAIApiKey: process.env.OPENAI_API_KEY,     // In Node.js defaults to process.env.OPENAI_API_KEY
-//  batchSize: 512,       // bunun ne olduğunu öğren
+//  //batchSize: 256,       // bunun ne olduğunu öğren
 //  modelName: "text-embedding-3-small",
 //});
 //
