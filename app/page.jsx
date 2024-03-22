@@ -68,11 +68,11 @@ const Home = () => {
       </form>
       <div>
         <ul>
-        { contents ? (
-          <pre>{contents}</pre>
-          ) : ( 
-            <p>Loading...</p>
-        )}
+          {contents.map((content, index) => (
+            <li key={index}>
+              <pre>{content.pageContent}</pre>
+            </li>
+          ))} 
         </ul>
       </div>
     </div>

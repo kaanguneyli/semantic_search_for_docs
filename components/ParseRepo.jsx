@@ -6,7 +6,7 @@ import { Document } from "langchain/document";
 const octokit = new Octokit();
 
 const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
-  chunkSize: 1000,
+  chunkSize: 250,
   chunkOverlap: 0,
 });
 
@@ -80,15 +80,15 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
     // If this is the initial call, process accumulated contents
     const output = await splitter.splitDocuments(accumulatedContents);
     // metadata'ya dosya adını koymamız gerekiyor
-    const output_json = JSON.stringify({ output });
+    //const output_json = JSON.stringify({ output });
     //console.log('output_json:', output_json);
     try {
       const response = await fetch('/api/addDocument', {
         method: 'POST',
         body: output_json,
       });
-      //return output;
-      return output_json;
+      return output;
+      //return output_json;
     } catch (error) { 
       console.error("Error fetching files:", error);
       return output;

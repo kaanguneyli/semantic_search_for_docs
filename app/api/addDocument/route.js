@@ -6,10 +6,19 @@ import { Document } from "langchain/document";
 
 
 export async function POST (req) {
-  const array = await req.json();
+  const data = await req.json();     // bundan sonra bunun tipinin document olup olmadığını anlamanın tek yolu tüm kodu çalıştırmak
   try {
-    console.log('zıbab ıvvj:', JSON.stringify( {array} ));
-    return new Response(JSON.stringify( {array} ), {
+    //console.log('zıbab ıvvj:', JSON.stringify( {data} ))
+    //const documents = JSON.parse(jsonData);
+    //  new Document ({
+    //      metadata: item.metadata,
+    //      pageContent: item.pageContent
+    //  });
+    //}); 
+    //documents.forEach((element, index) => {
+    //  console.log(`Element at index ${index} has type: ${typeof element}`);
+    //});
+    return new Response(JSON.stringify( {data} ), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
@@ -23,6 +32,8 @@ export async function POST (req) {
   }
 }
 
+
+
 //const index = new Index({
 //  url: process.env.UPSTASH_VECTOR_REST_URL,
 //  token: process.env.UPSTASH_VECTOR_REST_TOKEN,
@@ -35,4 +46,4 @@ export async function POST (req) {
 //});
 //
 //const UpstashVector = new UpstashVectorStore(embeddings, { index });
-//await UpstashVector.addDocuments(test);
+//await UpstashVector.addDocuments(documents);
