@@ -67,13 +67,7 @@ const Home = () => {
         </div>
       </form>
       <div>
-        <ul>
-          {contents.map((content, index) => (
-            <li key={index}>
-              <pre>{content.pageContent}</pre>
-            </li>
-          ))} 
-        </ul>
+        {contents} 
       </div>
     </div>
   );

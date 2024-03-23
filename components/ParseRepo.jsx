@@ -1,30 +1,27 @@
 import { Octokit } from "@octokit/core";
 import { RecursiveCharacterTextSplitter } from "langchain/text_splitter";  // npm install -S langchain
-//import { promises as fs } from 'fs';
 import { Document } from "langchain/document";
 
 const octokit = new Octokit();
 
 const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
-  chunkSize: 250,
+  chunkSize: 500,
   chunkOverlap: 0,
 });
 
 const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
 
-//  //const test = ["This is a test document.", "Yes, indeed.", "Weird stuff."];
-
 //  const test = [
 //    new Document({
-//      metadata: {name: 'id'},
+//      metadata: {path: 'file_1'},
 //      pageContent: "This is a test document.",
 //    }),
 //    new Document({
-//      metadata: {name: 'id'},
+//      metadata: {name: 'file_2'},
 //      pageContent: "Yes, indeed.",
 //    }),
 //    new Document({
-//      metadata: {name: "id"},
+//      metadata: {name: 'file_3'},
 //      pageContent: "Weird stuff.",
 //    }),
 //  ];
@@ -32,13 +29,15 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
 //  try {
 //    const response = await fetch('/api/addDocument', {
 //      method: 'POST',
-//      body: JSON.stringify({ test }),
+//      body: JSON.stringify(test),
 //    });
 //    return JSON.stringify({ test });
 //  } catch (error) { 
 //    console.error("Error fetching files:", error);
 //    return test;
 //  }
+
+
 
   try {
     const response = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
@@ -57,13 +56,6 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
         repo,
         path: file.path,
       });
-    //let contents = [];
-    //contents = await Promise.all(markdowns.map(async (file) => {
-    //  const fileResponse = await octokit.request('GET /repos/{owner}/{repo}/contents/{path}', {
-    //    owner,
-    //    repo,
-    //    path: file.path,
-    //  });
       // Decode the content from base64
       const content = Buffer.from(fileResponse.data.content, 'base64').toString('utf-8');
       const document = new Document({ metadata: {name: file.path}, pageContent: content });
@@ -77,18 +69,13 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
       await parseMarkdowns(owner, repo, directory.path, accumulatedContents);
     }
 
-    // If this is the initial call, process accumulated contents
     const output = await splitter.splitDocuments(accumulatedContents);
-    // metadata'ya dosya adını koymamız gerekiyor
-    //const output_json = JSON.stringify({ output });
-    //console.log('output_json:', output_json);
     try {
       const response = await fetch('/api/addDocument', {
         method: 'POST',
-        body: output_json,
+        body: JSON.stringify(output),
       });
-      return output;
-      //return output_json;
+      return JSON.stringify(output);
     } catch (error) { 
       console.error("Error fetching files:", error);
       return output;

@@ -4,11 +4,11 @@ import { OpenAIEmbeddings } from "@langchain/openai";
 import { UpstashVectorStore } from "@langchain/community/vectorstores/upstash"; 
 import { Document } from "langchain/document";
 
-
 export async function POST (req) {
   const data = await req.json();     // bundan sonra bunun tipinin document olup olmadığını anlamanın tek yolu tüm kodu çalıştırmak
+  //const data_json = JSON.stringify(data);
   try {
-    //console.log('zıbab ıvvj:', JSON.stringify( {data} ))
+    console.log(JSON.stringify( data ));
     //const documents = JSON.parse(jsonData);
     //  new Document ({
     //      metadata: item.metadata,
@@ -18,7 +18,21 @@ export async function POST (req) {
     //documents.forEach((element, index) => {
     //  console.log(`Element at index ${index} has type: ${typeof element}`);
     //});
-    return new Response(JSON.stringify( {data} ), {
+    const index = new Index({
+      url: process.env.UPSTASH_VECTOR_REST_URL,
+      token: process.env.UPSTASH_VECTOR_REST_TOKEN,
+    });
+    
+    const embeddings = new OpenAIEmbeddings({
+      openAIApiKey: process.env.OPENAI_API_KEY,     // In Node.js defaults to process.env.OPENAI_API_KEY
+      //batchSize: 256,       // bunun ne olduğunu öğren
+      modelName: "text-embedding-3-small",
+    });
+    
+    const UpstashVector = new UpstashVectorStore(embeddings, { index });
+    await UpstashVector.addDocuments(data);
+
+    return new Response(JSON.stringify(data), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
@@ -31,19 +45,3 @@ export async function POST (req) {
     });
   }
 }
-
-
-
-//const index = new Index({
-//  url: process.env.UPSTASH_VECTOR_REST_URL,
-//  token: process.env.UPSTASH_VECTOR_REST_TOKEN,
-//});
-//
-//const embeddings = new OpenAIEmbeddings({
-//  openAIApiKey: process.env.OPENAI_API_KEY,     // In Node.js defaults to process.env.OPENAI_API_KEY
-//  //batchSize: 256,       // bunun ne olduğunu öğren
-//  modelName: "text-embedding-3-small",
-//});
-//
-//const UpstashVector = new UpstashVectorStore(embeddings, { index });
-//await UpstashVector.addDocuments(documents);
