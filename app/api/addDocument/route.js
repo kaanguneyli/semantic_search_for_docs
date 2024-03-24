@@ -5,10 +5,10 @@ import { UpstashVectorStore } from "@langchain/community/vectorstores/upstash";
 import { Document } from "langchain/document";
 
 export async function POST (req) {
-  const data = await req.json();     // bundan sonra bunun tipinin document olup olmadığını anlamanın tek yolu tüm kodu çalıştırmak
+  const data = await req.json();
   //const data_json = JSON.stringify(data);
   try {
-    console.log(JSON.stringify( data ));
+    console.log(data);
     //const documents = JSON.parse(jsonData);
     //  new Document ({
     //      metadata: item.metadata,
@@ -32,7 +32,7 @@ export async function POST (req) {
     const UpstashVector = new UpstashVectorStore(embeddings, { index });
     await UpstashVector.addDocuments(data);
 
-    return new Response(JSON.stringify(data), {
+    return new Response(data, {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
