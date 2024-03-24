@@ -28,9 +28,9 @@ export async function GET(req) {
         //const result_json = JSON.stringify(result.metadata);
         let response = [];
         result.forEach((element) => {
-            console.log(element.metadata._pageContentLC, '\n') ;
-            console.log(element.metadata.name, '\n\n'); // loc eklemek gerekebilir
-            const res_one = [element.metadata._pageContentLC, element.metadata.path];
+            //console.log(element.metadata._pageContentLC, '\n') ;
+            //console.log(element.metadata.name, '\n\n'); // loc eklemek gerekebilir
+            const res_one = [element.metadata._pageContentLC, element.metadata.name, '\n\n\n'];
             response.push(res_one);
         });
         //console.log(result_json);

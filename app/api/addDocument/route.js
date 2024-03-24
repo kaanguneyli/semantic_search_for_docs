@@ -6,9 +6,8 @@ import { Document } from "langchain/document";
 
 export async function POST (req) {
   const data = await req.json();
-  //const data_json = JSON.stringify(data);
+  console.log(data.length);
   try {
-    console.log(data);
     //const documents = JSON.parse(jsonData);
     //  new Document ({
     //      metadata: item.metadata,
@@ -32,7 +31,7 @@ export async function POST (req) {
     const UpstashVector = new UpstashVectorStore(embeddings, { index });
     await UpstashVector.addDocuments(data);
 
-    return new Response(data, {
+    return new Response(JSON.stringify('successful'), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
@@ -44,4 +43,9 @@ export async function POST (req) {
       status: 500,
     });
   }
+//  console.log(data.length);
+//  return new Response(JSON.stringify(data.length), {
+//    headers: { 'Content-Type': 'application/json' },
+//    status: 200,
+//  });
 }

@@ -63,19 +63,20 @@ const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) 
       
     }));
 
-    accumulatedContents.push(...contents);
+    //accumulatedContents.push(...contents);
     // Recursively search subdirectories for Markdown files
     for (const directory of directories) {
       await parseMarkdowns(owner, repo, directory.path, accumulatedContents);
     }
-
-    const output = await splitter.splitDocuments(accumulatedContents);
+    //const output = await splitter.splitDocuments(accumulatedContents);
+    let output = [];
+    output = await splitter.splitDocuments(contents);
     try {
       const response = await fetch('/api/addDocument', {
         method: 'POST',
         body: JSON.stringify(output),
       });
-      return JSON.stringify(output);
+      return JSON.stringify(response);
     } catch (error) { 
       console.error("Error fetching files:", error);
       return output;
