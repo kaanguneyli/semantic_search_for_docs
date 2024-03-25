@@ -12,31 +12,31 @@ const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
 
 const parseMarkdowns = async (owner, repo, path = '', accumulatedContents = []) => {
 
-  const test = [
-    new Document({
-      metadata: {path: 'file_1'},
-      pageContent: "This is a test document. feklsnfıesbfjkaesbjfkbjskbfjkbeskjfbjks",
-    }),
-    new Document({
-      metadata: {name: 'file_2'},
-      pageContent: "Yes, indeed. aed nanebsec nesvhbıhf cugsvdbhjo",
-    }),
-    new Document({
-      metadata: {name: 'file_3'},
-      pageContent: "Weird stuff. eafshıegbahdjıokpwıjhgvf ajkdospjhbjn kad",
-    }),
-  ];
-  
-  try {
-    const response = await fetch('/api/addDocument', {
-      method: 'POST',
-      body: JSON.stringify(test),
-    });
-    return JSON.stringify({ test });
-  } catch (error) { 
-    console.error("Error fetching files:", error);
-    return test;
-  }
+//  const test = [
+//    new Document({
+//      metadata: {path: 'file_1'},
+//      pageContent: "This is a test document. feklsnfıesbfjkaesbjfkbjskbfjkbeskjfbjks",
+//    }),
+//    new Document({
+//      metadata: {name: 'file_2'},
+//      pageContent: "Yes, indeed. aed nanebsec nesvhbıhf cugsvdbhjo",
+//    }),
+//    new Document({
+//      metadata: {name: 'file_3'},
+//      pageContent: "Weird stuff. eafshıegbahdjıokpwıjhgvf ajkdospjhbjn kad",
+//    }),
+//  ];
+//  
+//  try {
+//    const response = await fetch('/api/addDocument', {
+//      method: 'POST',
+//      body: JSON.stringify(test),
+//    });
+//    return JSON.stringify({ test });
+//  } catch (error) { 
+//    console.error("Error fetching files:", error);
+//    return test;
+//  }
 
 
 
