@@ -26,7 +26,6 @@ const Home = () => {
     setSubmitting(false);
   };
 
-  // TODO line 71: <pre>{content.pageContent}</pre>
   return (
     <div>
       <form onSubmit={handleSubmit}>

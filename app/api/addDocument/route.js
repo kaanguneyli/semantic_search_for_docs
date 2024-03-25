@@ -6,7 +6,6 @@ import { Document } from "langchain/document";
 
 export async function POST (req) {
   const data = await req.json();
-  console.log(data.length);
   try {
     //const documents = JSON.parse(jsonData);
     //  new Document ({
@@ -23,10 +22,12 @@ export async function POST (req) {
     });
     
     const embeddings = new OpenAIEmbeddings({
-      openAIApiKey: process.env.OPENAI_API_KEY,     // In Node.js defaults to process.env.OPENAI_API_KEY
-      //batchSize: 256,       // bunun ne olduğunu öğren
+      openAIApiKey: process.env.OPENAI_API_KEY,
+      //batchSize: 256,n
       modelName: "text-embedding-3-small",
     });
+    
+    console.log(data.length);
     
     const UpstashVector = new UpstashVectorStore(embeddings, { index });
     await UpstashVector.addDocuments(data);
