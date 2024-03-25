@@ -23,9 +23,13 @@ export async function GET(req) {
         const vectorStore = new UpstashVectorStore(embeddings, { index });
         const result = await vectorStore.similaritySearchWithScore(
             query,
-            2
+            topK
           );
-        const response = result;
+        let response = [];
+        result.forEach((element) => {
+            const res_one = [element[0]._pageContentLC, element[0].metadata.name, '\n\n\n'];
+            response.push(res_one);
+        });
         //const embed_query = await embeddings.embedQuery(query);
         //const result = await index.query({
         //    vector: embed_query,
