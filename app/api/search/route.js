@@ -1,5 +1,6 @@
 import { Index } from "@upstash/vector";
 import { OpenAIEmbeddings } from "@langchain/openai";
+import { UpstashVectorStore } from "@langchain/community/vectorstores/upstash"; 
 import { response } from "express";
 
 export async function GET(req) {
