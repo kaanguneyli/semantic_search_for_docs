@@ -5,7 +5,7 @@ import { Document } from "langchain/document";
 const octokit = new Octokit();
 
 const splitter = RecursiveCharacterTextSplitter.fromLanguage("markdown", {
-  chunkSize: 100,
+  chunkSize: 500,
   chunkOverlap: 0,
 });
 
