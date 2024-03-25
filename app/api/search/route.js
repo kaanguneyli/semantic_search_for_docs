@@ -27,7 +27,7 @@ export async function GET(req) {
           );
         let response = [];
         result.forEach((element) => {
-            const res_one = [element[0]._pageContentLC, element[0].metadata.name, '\n\n\n'];
+            const res_one = [element[0].pageContent, element[0].metadata.name, '\n\n\n'];
             response.push(res_one);
         });
         //const embed_query = await embeddings.embedQuery(query);
