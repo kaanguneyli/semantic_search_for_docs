@@ -29,8 +29,8 @@ export async function POST (req) {
     
     console.log(data.length);
     
-    const UpstashVector = new UpstashVectorStore(embeddings, { index });
-    await UpstashVector.addDocuments(data);
+    const vectorStore = new UpstashVectorStore(embeddings, { index });
+    await vectorStore.addDocuments(data);
 
     return new Response(JSON.stringify('successful'), {
       headers: { 'Content-Type': 'application/json' },
