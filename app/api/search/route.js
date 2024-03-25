@@ -18,9 +18,9 @@ export async function GET(req) {
             openAIApiKey: process.env.OPENAI_API_KEY,
             modelName: "text-embedding-3-small",
         });
-        const embed_query = await embeddings.embedDocuments([query]);
+        const embed_query = await embeddings.embedQuery(query);
         const result = await index.query({
-            vector: embed_query[0],
+            vector: embed_query,
             topK: topK,
             includeVectors: true,
             includeMetadata: true
