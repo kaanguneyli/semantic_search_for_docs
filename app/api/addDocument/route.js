@@ -1,8 +1,6 @@
-//import { Response } from 'express'; // npm install express
 import { Index } from "@upstash/vector"; // npm install -S @upstash/vector
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { UpstashVectorStore } from "@langchain/community/vectorstores/upstash"; 
-//import { Document } from "langchain/document";
 
 export async function POST (req) {
   // Get the data from the request

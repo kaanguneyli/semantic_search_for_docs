@@ -45,24 +45,6 @@ export async function GET(req) {
             const res_one = [element[0].pageContent, element[0].metadata.name, '\n\n\n'];
             response.push(res_one);
         });
-        //const embed_query = await embeddings.embedQuery(query);
-        //const result = await index.query({
-        //    vector: embed_query,
-        //    topK: topK,
-        //    includeVectors: true,
-        //    includeMetadata: true
-        //});
-        ////const result_json = JSON.stringify(result.metadata);
-        //let response = [];
-        //result.forEach((element) => {
-        //    //console.log(element.metadata._pageContentLC, '\n') ;
-        //    //console.log(element.metadata.name, '\n\n'); // loc eklemek gerekebilir
-        //    const res_one = [element.metadata._pageContentLC, element.metadata.name, '\n\n\n'];
-        //    response.push(res_one);
-        //});
-
-        
-        //console.log(result_json);
 
         return new Response(response, {
             headers: { 'Content-Type': 'application/json' },
