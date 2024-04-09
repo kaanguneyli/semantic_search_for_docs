@@ -1,7 +1,7 @@
 
 export const metadata = {
-  title: "ui",
-  description: "ui"
+  title: "semantic search engine for docs",
+  description: "semantic search engine for docs"
 }
 
 

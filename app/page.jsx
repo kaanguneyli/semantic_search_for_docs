@@ -2,13 +2,14 @@
 
 import { useState } from 'react';
 import { parseMarkdowns } from '@/components/ParseRepo';
-import { Document } from "langchain/document";
+//import { Document } from "langchain/document";
 
 const Home = () => {
 
+  // create variables that will be set based on the input
   const [submitting, setSubmitting] = useState(false);
   const [inputText, setInputText] = useState({owner: '', repo: ''});
-  const [contents, setContents] = useState([]);
+  //const [contents, setContents] = useState([]);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -18,11 +19,12 @@ const Home = () => {
     }));
   };
 
+    // when the input is submitted run the parser script
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSubmitting(true);
     const res = await parseMarkdowns(inputText.owner, inputText.repo);
-    setContents(res);
+    //setContents(res);
     setSubmitting(false);
   };
 
@@ -65,9 +67,6 @@ const Home = () => {
           )}
         </div>
       </form>
-      <div>
-        {contents} 
-      </div>
     </div>
   );
 }

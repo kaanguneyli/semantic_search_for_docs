@@ -2,51 +2,39 @@
 import { Index } from "@upstash/vector"; // npm install -S @upstash/vector
 import { OpenAIEmbeddings } from "@langchain/openai";
 import { UpstashVectorStore } from "@langchain/community/vectorstores/upstash"; 
-import { Document } from "langchain/document";
+//import { Document } from "langchain/document";
 
 export async function POST (req) {
+  // Get the data from the request
   const data = await req.json();
   try {
-    //const documents = JSON.parse(jsonData);
-    //  new Document ({
-    //      metadata: item.metadata,
-    //      pageContent: item.pageContent
-    //  });
-    //}); 
-    //documents.forEach((element, index) => {
-    //  console.log(`Element at index ${index} has type: ${typeof element}`);
-    //});
+    // Create an Index object
     const index = new Index({
       url: process.env.UPSTASH_VECTOR_REST_URL,
       token: process.env.UPSTASH_VECTOR_REST_TOKEN,
     });
     
+    // Create an OpenAIEmbeddings object
     const embeddings = new OpenAIEmbeddings({
       openAIApiKey: process.env.OPENAI_API_KEY,
-      //batchSize: 256,n
       modelName: "text-embedding-3-small",
     });
     
-    console.log(data.length);
-    
+    // Create a VectorStore object
     const vectorStore = new UpstashVectorStore(embeddings, { index });
+
+    // Add the documents to the VectorStore
     await vectorStore.addDocuments(data);
 
-    return new Response(JSON.stringify('successful'), {
+    return new Response(JSON.stringify('Successful'), {
       headers: { 'Content-Type': 'application/json' },
       status: 200,
     });
   }
   catch (error) {
-    console.log('error');
     return new Response(JSON.stringify({ error: error.message }), {
       headers: { 'Content-Type': 'application/json' },
       status: 500,
     });
   }
-//  console.log(data.length);
-//  return new Response(JSON.stringify(data.length), {
-//    headers: { 'Content-Type': 'application/json' },
-//    status: 200,
-//  });
 }
